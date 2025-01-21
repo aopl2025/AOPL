@@ -26,9 +26,13 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login()->passwordReset()->darkMode(false)
+            ->font('Poppins')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => '#f85f15',
+                'secondary' => '#008080',
+                'tertiary' => '#800080',
+                'quarternary' => '#a2d2ff',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -53,6 +57,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])->sidebarCollapsibleOnDesktop();
     }
 }
