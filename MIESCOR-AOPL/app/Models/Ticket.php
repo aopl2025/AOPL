@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 
-class Ticket extends Model
+class Ticket extends Model implements Sortable
 {
-    use HasFactory;
+    use HasFactory,SortableTrait;
     protected $fillable = [
         'id',
           'title',
@@ -41,7 +43,24 @@ class Ticket extends Model
           'assignee',
           'assigned_group',
           'other_assignees',
+          'order_column',
           'created_at',
           'updated_at',
     ];
+
+    protected $casts = [
+        'status' => TicketStatus::class,
+    ];
+
+    public static function ignoreTimestamps($should = true)
+    {
+      if($should)
+      {
+        static::$ignoreTimestampsOn = array_values(array_merge(static::ignoreTimestampsOn, [static::class]));
+      }
+      else
+      {
+        static::$ignoreTimestampsOn = array_values(array_diff(static::ignoreTimestampsOn, [static::class]));
+      }
+    }
 }
